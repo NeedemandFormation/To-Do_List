@@ -14,4 +14,4 @@ CREATE TABLE `task` (
 
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON library.* TO 'user'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON todolist.* TO 'user'@'localhost';
