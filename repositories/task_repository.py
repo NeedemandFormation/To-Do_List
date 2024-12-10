@@ -1,4 +1,5 @@
 import mysql.connector
+
 from mysql.connector import Error
 from entities.task_entity import TaskEntity
 
@@ -23,16 +24,22 @@ class TaskRepository:
       self.connection = None
 
   def create(self, task_entity: TaskEntity) ->int:
-    query = "INSERT INTO task (title, description, is_done)" 
-    "VALUES(%s, %s, %s)"
-    values = (task_entity.title, task_entity.description, task_entity.is_done)
+    query = """
+    INSERT INTO task (title, description, is_done, created_at)
+    VALUES(%s, %s, %s, %s)
+    """
+    values = (task_entity.title, task_entity.description, task_entity.is_done, task_entity.created_at)
 
-    cursor = self.connection.cursor()
-    cursor.execute(query, values)
-    self.connection.commit()
+    try:
+      cursor = self.connection.cursor()
+      cursor.execute(query, values)
+      self.connection.commit()
 
-    return cursor.lastrowid
-  
+      return cursor.lastrowid
+    except Error as err:
+      print(f"Couldn't add task: {err}")
+      return None
+
   def __del__(self):
     if hasattr(self, 'connection') and self.connection:
       if self.connection.is_connected():
