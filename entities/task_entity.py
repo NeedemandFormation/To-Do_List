@@ -1,11 +1,11 @@
 class TaskEntity:
-  def __init__(self, id=None, title=None, description=None, created_at=None, updated_at=None):
+  def __init__(self, id = None, title = None, created_at = 0, description = None, updated_at = None, is_done = False):
     self.id = id
     self.title = title
-    self.description = description
-    self.is_done = False
     self.created_at = created_at
+    self.description = description
     self.updated_at = updated_at
+    self.is_done = is_done
 
   def __str__(self):
         return f"TaskEntity(id={self.id}, title={self.title}, description={self.description}, " \

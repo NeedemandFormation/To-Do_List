@@ -12,3 +12,9 @@ class TaskManager:
       entity.id = self.repository.create(entity)
     
     return entity
+  
+  def get_tasks(self):
+    return self.repository.read()
+  
+  def delete_task(self, id):
+    return self.repository.delete(id)

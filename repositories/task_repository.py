@@ -39,6 +39,40 @@ class TaskRepository:
     except Error as err:
       print(f"Couldn't add task: {err}")
       return None
+    
+  def read(self):
+    query = "SELECT * FROM task"
+
+    try:
+      cursor = self.connection.cursor(dictionary=True)
+      cursor.execute(query)
+      tasks = cursor.fetchall()
+
+      return [TaskEntity(
+        task["id"],
+        task["title"],
+        task["created_at"],
+        task["description"],
+        task["updated_at"],
+        task["is_done"]
+        ) for task in tasks]
+    
+    except Error as e:
+      print(f"Erreur lors de la récupération des livres : {e}")
+
+      return []
+
+  def delete(self, id):
+    query = "DELETE FROM task WHERE id = %s"
+
+    try:
+      cursor = self.connection.cursor()
+      cursor.execute(query, (id,))
+      self.connection.commit()
+      return cursor.rowcount > 0
+    except Error as err:
+      print(f"Erreur lors de la suppression de la tâche : {err}")
+      return False 
 
   def __del__(self):
     if hasattr(self, 'connection') and self.connection:
