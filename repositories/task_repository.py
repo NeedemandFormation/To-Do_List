@@ -61,6 +61,25 @@ class TaskRepository:
       print(f"Erreur lors de la récupération des livres : {e}")
 
       return []
+    
+  def update(self, id, updated_at):
+    query = """
+        UPDATE task
+        SET is_done = NOT is_done, updated_at = %s
+        WHERE id = %s
+        """
+    values = (
+      updated_at,
+      id
+      )
+    try:
+      cursor = self.connection.cursor()
+      cursor.execute(query, values)
+      self.connection.commit()
+      return cursor.rowcount > 0
+    except Error as e:
+      print(f"Erreur lors de la mise à jour de la tâche : {e}")
+      return None
 
   def delete(self, id):
     query = "DELETE FROM task WHERE id = %s"

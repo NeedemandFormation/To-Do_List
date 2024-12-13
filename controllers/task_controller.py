@@ -31,3 +31,14 @@ class TaskController():
       self.get_tasks()
     else:
       print("Échec de la suppression : Tâche non trouvée.")
+
+  def update_task(self, object):
+    task_id = self.view.checkboxes.id(object)
+    is_updated = self.manager.update_task(task_id)
+
+    if is_updated:
+      print(f"La tâche avec l'ID {task_id} a été modifée avec succès.")
+      self.get_tasks()
+    else:
+      print("Échec de la modification : Tâche non trouvée.")
+    return

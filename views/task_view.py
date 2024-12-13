@@ -25,11 +25,8 @@ class TaskView(QWidget):
 
     self.tasks_layout = QVBoxLayout()
     self.del_btns = QButtonGroup()
-
-    # layouts = [self.form_layout, self.buttons_layout]
-
-    # for layout in layouts:
-    #   self.layout.addLayout(layout)
+    self.checkboxes = QButtonGroup()
+    self.checkboxes.setExclusive(False)
 
     self.main_layout.addLayout(self.form_layout)
     self.main_layout.addLayout(self.buttons_layout)
@@ -59,12 +56,14 @@ class TaskView(QWidget):
 
   def display_task(self, task: TaskEntity):
     layout = QHBoxLayout()
-    converted_date = datetime.fromtimestamp(task.created_at).strftime("%d/%m/%Y %H:%M")
+    converted_date = datetime.fromtimestamp(task.created_at).strftime("%d/%m/%Y %H:%M") if not task.updated_at else datetime.fromtimestamp(task.updated_at).strftime("%d/%m/%Y %H:%M")
     checkbox = QCheckBox(f"{converted_date} : {task.title}", self)
+    checkbox.setChecked(task.is_done)
     button = QPushButton("Supprimer")
     description = QLabel(task.description)
 
     self.del_btns.addButton(button, task.id)
+    self.checkboxes.addButton(checkbox, task.id)
 
     layout.addWidget(checkbox)
     layout.addWidget(button)
@@ -91,3 +90,4 @@ class TaskView(QWidget):
     self.add_button.clicked.connect(controller.add_task)
     controller.get_tasks()
     self.del_btns.buttonClicked.connect(controller.delete_task)
+    self.checkboxes.buttonClicked.connect(controller.update_task)

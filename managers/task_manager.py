@@ -18,3 +18,7 @@ class TaskManager:
   
   def delete_task(self, id):
     return self.repository.delete(id)
+  
+  def update_task(self, id):
+    updated_at = time.time()
+    return self.repository.update(id, updated_at)
